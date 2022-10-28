@@ -1,0 +1,271 @@
+openapi: '3.0.3'
+info:
+  title: 'Employee Manager REST API Documentation'
+  description: 'Employee Manager REST API implementation.'
+  contact:
+    name: 'Thinura Kumarasinghe'
+    email: 'thinuralaksara@gmail.com'
+  version: '1.0'
+  license:
+    name: 'MIT'
+servers:
+  - url: 'http://localhost:4000'
+components:
+  schemas:
+    employee:
+      title: 'Employee Object'
+      type: 'object'
+      required: 
+        - 'firstName'
+        - 'lastName'
+        - 'email'
+        - 'phoneNumber'
+        - 'gender'
+      properties:
+        id:
+          type: 'string'
+          title: 'ID'
+          description: 'Id of the employee. Which is an auto-generated.'
+          example: '1'
+        firstName:
+          type: 'string'
+          title: 'FIRST_NAME'
+          description: 'First name of the employee.'
+          example: 'Thinura'
+        lastName:
+          type: 'string'
+          title: 'LAST_NAME'
+          description: 'Last name of the employee.'
+          example: 'Kumarasinghe'
+        email:
+          type: 'string'
+          title: 'EMAIL'
+          description: 'Email of the employee.'
+          example: 'thinura@dev.com'
+        phoneNumber:
+          type: 'string'
+          title: 'PHONE_NUMBER'
+          description: 'Phone number of the employee.'
+          example: '0123456789'
+        gender:
+          type: 'string'
+          title: 'GENDER'
+          enum: 
+           - 'MALE'
+           - 'FEMALE'
+          example: 'MALE'
+        updatedAt:
+          type: 'string'
+          title: 'UPDATED AT'
+          description: 'The updated time of the user'
+          example: '2022-10-27T09:40:20.628Z'
+        createdAt:
+          type: 'string'
+          title: 'CREATED AT'
+          description: 'The created time of the user'
+          example: '2022-10-27T09:40:20.628Z'
+    createEmployeePostRequestBody:
+      title: 'Create Employee Post Request Object'
+      type:  'object'
+      properties:
+        firstName:
+          type: 'string'
+          example: 'Thinura'
+        lastName:
+          type: 'string'
+          example: 'Kumarasinghe'
+        email:
+          type: 'string'
+          example: 'thinura@dev.com'
+        phoneNumber:
+          type: 'string'
+          example: '0123456789'
+        gender:
+          type: 'string'
+          enum: 
+           - 'MALE'
+           - 'FEMALE'
+          example: 'MALE'
+    unauthorizedErrorMessage:
+      title: 'Unauthorized Server Error Object'
+      type: 'object'
+      properties: 
+        error: 
+          type: 'string'
+          example: 'UnauthorizedError: invalid signature'
+    badRequestErrorMessage:
+      title: 'Bad Request Server Error Object'
+      type: 'object'
+      properties: 
+        error: 
+          type: 'string'
+          example: 'lastName must be at most 10 characters'
+    deleteSuccessMessage:
+      title: 'Delete Success Message Object'
+      type: 'object'
+      properties: 
+        message: 
+          type: 'string'
+          example: 'Resource successfully deleted!'
+    internalServerErrorMessage:
+      title: 'Internal Server Error Object'
+      type: 'object'
+      properties: 
+        error: 
+          type: 'string'
+          example: 'Internal server error'
+    notFoundErrorMessage:
+      title: 'Not Found Error Object'
+      type: 'object'
+      properties: 
+        error: 
+          type: 'string'
+          example: 'Not Found'
+
+paths:
+  /api/employee:
+    post:
+      tags:
+        - 'Employee API Endpoints'
+      summary: 'Create a new employee.'
+      requestBody:
+        description: 'Details of task to be updated'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createEmployeePostRequestBody'
+      responses:
+        '201':
+          description: 'The user was successfully created'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/employee'
+        '400':
+          description: 'Bad Request' 
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/badRequestErrorMessage'
+        '401':
+          description: 'UnauthorizedError' 
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/unauthorizedErrorMessage'
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/internalServerErrorMessage'
+        '404':
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/notFoundErrorMessage'
+    get:
+      tags:
+        - 'Employee API Endpoints'
+      summary: 'Fetch Employee details'
+      responses:
+        '200':
+          description: 'The details of emplyoee'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/employee'
+        '204':
+          description: 'No employee Details'
+        '401':
+          description: 'UnauthorizedError' 
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/unauthorizedErrorMessage'
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/internalServerErrorMessage'
+        '404':
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/notFoundErrorMessage'
+  /api/employee/{empId}:
+    delete:
+      parameters:
+        - in: path
+          name: empId
+          required: true
+          schema:
+            type: string
+            example: '123'
+      tags:
+        - 'Employee API Endpoints'
+      summary: 'Delete a employee'
+      responses:
+        '200':
+          description: 'The user was successfully deleted'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/deleteSuccessMessage'
+        '401':
+          description: 'UnauthorizedError' 
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/unauthorizedErrorMessage'
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/internalServerErrorMessage'
+        '404':
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/notFoundErrorMessage'
+    put:
+      parameters:
+        - in: path
+          name: empId
+          required: true
+          schema:
+            type: string
+            example: '123'
+      tags:
+        - 'Employee API Endpoints'
+      summary: 'Update a employee detail'
+      responses:
+        '200':
+          description: 'The user was successfully deleted'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/deleteSuccessMessage'
+        '401':
+          description: 'UnauthorizedError' 
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/unauthorizedErrorMessage'
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/internalServerErrorMessage'
+        '404':
+          description: 'Not found'
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/notFoundErrorMessage'
