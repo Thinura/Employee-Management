@@ -1,9 +1,16 @@
+const dotenv = require('dotenv');
+const envFile = process.env.NODE_ENV ? `../.env.${process.env.NODE_ENV}` : '.env';
+dotenv.config({ path: envFile });
+
 const router = require('express').Router();
 
 const { Employee } = require('../models');
 const validateDto = require('../middlewares/validateDto');
 const { creaateEmployeeRequestDto } = require('../dto/employee');
 const LOG = require('../logger');
+const upload = require('../middlewares/validateImage');
+const { HTTP_NOT_FOUND_CODE, HTTP_INTERNAL_SERVER_ERROR_CODE, HTTP_FORBIDDEN_CODE, HTTP_RESOURCE_CREATED_CODE, HTTP_NOT_CONTENT_CODE, HTTP_SUCCESS_CODE } = require('../constants/httpStatusCodes');
+
 /*
     +-------------------------------------------+
     |                                           |
@@ -14,16 +21,26 @@ const LOG = require('../logger');
 
 router.post('/', validateDto(creaateEmployeeRequestDto), async (req, res) => {
   try {
-    const { firstName, lastName, email, phoneNumber, gender } = await req.body;
+    const { firstName, lastName, email, phone, gender, photo } = await req.body;
     const employees = await Employee.findOne({ where: { email } });
     if (employees) {
-      return res.status(403).json({ error: "Already Exists" });
+      return res.status(HTTP_FORBIDDEN_CODE).json({ error: "Already Exists" });
     }
-    const newUser = await Employee.create({ firstName, lastName, email, phone: phoneNumber, gender });
-    return res.status(201).json(newUser);
+    const newUser = await Employee.create({ firstName, lastName, email, phone, gender, photo });
+    return res.status(HTTP_RESOURCE_CREATED_CODE).json(newUser);
   } catch (error) {
     LOG.error('[POST - CREATE EMPLOYEE] Error: ', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(HTTP_INTERNAL_SERVER_ERROR_CODE).json({ error: 'Internal server error' });
+  }
+});
+
+router.post('/upload', upload.single('photo'), async (req, res) => {
+  try {
+    const uploadPath = `${process.env.SERVER_URL}:${process.env.HTTP_PORT}/${req.file.path}`;
+    return res.status(HTTP_SUCCESS_CODE).json({ uploadPath });
+  } catch (error) {
+    LOG.error('[POST - CREATE EMPLOYEE] Error: ', error);
+    return res.status(HTTP_INTERNAL_SERVER_ERROR_CODE).json({ error: 'Internal server error' });
   }
 });
 
@@ -31,12 +48,29 @@ router.get('/', async (req, res) => {
   try {
     const employees = await Employee.findAll();
     if (employees.length === 0) {
-      return res.status(204).json();
+      return res.status(HTTP_NO_CONTENT_CODE).json();
     }
-    return res.status(200).json(employees);
+    return res.status(HTTP_SUCCESS_CODE).json(employees);
   } catch (error) {
-    LOG.error('[GET - GET ALL EMPLYEE] Error: ', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    LOG.error('[GET - GET ALL EMPLYOEE Error: ', error);
+    return res.status(HTTP_INTERNAL_SERVER_ERROR_CODE).json({ error: 'Internal server error' });
+  }
+});
+
+router.get('/:empId', async (req, res) => {
+  try {
+    const { empId } = req.params;
+
+    const employee = await Employee.findOne({ where: { id: empId } });
+    if (!employee) {
+      return res.status(HTTP_NOT_FOUND_CODE).json({
+        error: "The requested resource was not found.",
+      });
+    }
+    return res.status(HTTP_SUCCESS_CODE).json(employee);
+  } catch (error) {
+    LOG.error('[GET - GET EMPLOYEE BY ID] Error: ', error);
+    return res.status(HTTP_INTERNAL_SERVER_ERROR_CODE).json({ error: 'Internal server error' });
   }
 });
 
@@ -46,44 +80,45 @@ router.delete('/:empId', async (req, res) => {
 
     const employee = await Employee.findOne({ where: { id: empId } });
     if (!employee) {
-      return res.status(404).json({
+      return res.status(HTTP_NOT_FOUND_CODE).json({
         error: "The requested resource was not found.",
       });
     }
     employee.destroy();
 
-    return res.status(200).json({ message: 'Resource successfully deleted!' });
+    return res.status(HTTP_SUCCESS_CODE).json({ message: 'Resource successfully deleted!' });
   } catch (error) {
     LOG.error('[DELETE - DELETE EMPLOYEE BY ID] Error: ', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(HTTP_INTERNAL_SERVER_ERROR_CODE).json({ error: 'Internal server error' });
   }
 });
 
-router.put('/:empId', async (req, res) => {
+router.put('/:empId', validateDto(creaateEmployeeRequestDto), async (req, res) => {
   try {
     const { empId } = req.params;
 
     const employee = await Employee.findOne({ where: { id: empId } });
     if (!employee) {
-      return res.status(404).json({
+      return res.status(HTTP_NOT_FOUND_CODE).json({
         error: "The requested resource was not found.",
       });
     }
 
-    const { firstName, lastName, email, phoneNumber, gender } = await req.body;
+    const { firstName, lastName, email, phone, gender, photo } = await req.body;
 
     employee.firstName = firstName;
     employee.lastName = lastName;
     employee.email = email;
-    employee.phone = phoneNumber;
+    employee.phone = phone;
     employee.gender = gender;
+    employee.photo = photo;
 
     await employee.save();
 
-    return res.status(204).json();
+    return res.status(HTTP_NO_CONTENT_CODE).json();
   } catch (error) {
     LOG.warn('[PUT - UPDATE EMPLOYEE DETAILS] Error: ', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(HTTP_INTERNAL_SERVER_ERROR_CODE).json({ error: 'Internal server error' });
   }
 });
 
