@@ -1,0 +1,7 @@
+{
+  "jshint.enable": false,
+  "jshint.packageManager": "yarn",
+  "eslint.alwaysShowStatus": true,
+  "eslint.format.enable": true,
+  "eslint.packageManager": "yarn"
+}
