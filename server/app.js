@@ -13,6 +13,7 @@ const { sequelize } = require('./models');
 const employeeRouter = require('./controllers/employee');
 const LOG = require('./logger');
 const apiErrorHandler = require('./errors/apiErrorHandler');
+const { HTTP_NOT_FOUND_CODE, HTTP_UNAUTHORIZED_CODE, HTTP_INTERNAL_SERVER_ERROR_CODE } = require('./constants/httpStatusCodes');
 
 const port = process.env.HTTP_PORT || 3000;
 
@@ -24,6 +25,7 @@ const app = express();
 // Adding middleware
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 app.use(morgan('combined'));
 
 // Adding routes
@@ -33,20 +35,20 @@ app.use(apiErrorHandler);
 
 app.use((req, res, next) => {
   const error = new Error('Not Found');
-  error.status = 404;
+  error.status = HTTP_NOT_FOUND_CODE;
   next(error);
 });
 
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
-    res.status(401).json({ error: `${err.name}: ${err.message}` });
+    res.status(HTTP_UNAUTHORIZED_CODE).json({ error: `${err.name}: ${err.message}` });
   }
   next(err);
 });
 
 app.use((error, req, res) => {
   LOG.error(error);
-  const status = error.status || 500;
+  const status = error.status || HTTP_INTERNAL_SERVER_ERROR_CODE;
   const message = error.message || 'Internal Server Error';
   res.status(status).json({ error: message });
 });
