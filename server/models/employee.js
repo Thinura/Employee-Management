@@ -4,8 +4,6 @@ const {
   Sequelize,
 } = require('sequelize');
 
-const phoneValidationRegex = /^[0-9]{10}$/;
-
 module.exports = (sequelize, DataTypes) => {
   class Employee extends Model {
     /**
@@ -50,15 +48,12 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     phone: {
-      type: Sequelize.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        function (value) {
-          if(!phoneValidationRegex.test(value)){
-            throw new Error('Invalid phone number.');
-          };
-        },
-      }
+    },
+    photo: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     gender: {
       type: Sequelize.ENUM,

@@ -44,13 +44,12 @@ module.exports = {
         },
       },
       phone: {
-        type: Sequelize.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-          validator: function (v) {
-            return phoneValidationRegex.test(v);
-          },
-        }
+      },
+      photo: {
+        type: DataTypes.STRING,
+        allowNull: true
       },
       gender: {
         type: Sequelize.ENUM,
