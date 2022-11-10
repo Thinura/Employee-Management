@@ -1,12 +1,14 @@
 version: '3.8'
+name: 'swivel-tech-employee-manager'
 services:
   dev-db: 
+    container_name: 'employee-manager-dev-db'
     image: postgres:13
     ports:
-      - 5434:5432
+      - 5432:5432
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
+      POSTGRES_PASSWORD: 123456
       POSTGRES_DB: employee_db
     networks:
       - thinura
