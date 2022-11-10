@@ -3,7 +3,7 @@ name: 'swivel-tech-employee-manager'
 services:
   dev-db: 
     container_name: 'employee-manager-dev-db'
-    image: postgres:13
+    image: postgres:latest
     ports:
       - 5432:5432
     environment:

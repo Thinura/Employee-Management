@@ -60,3 +60,5 @@ app.listen(port, async () => {
   await sequelize.authenticate();
   LOG.info('Database Connected successfully!');
 });
+
+module.exports = app;
