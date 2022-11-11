@@ -16,9 +16,11 @@ const apiErrorHandler = require('./errors/apiErrorHandler');
 const { HTTP_NOT_FOUND_CODE, HTTP_UNAUTHORIZED_CODE, HTTP_INTERNAL_SERVER_ERROR_CODE } = require('./constants/httpStatusCodes');
 
 const port = process.env.PORT || 3000;
+const path = require('path');
 
 // Initializing swagger configuration
-const swaggerDocument = YAML.load('./swagger.yml');
+const swaggerPath = path.resolve('swagger.yml');
+const swaggerDocument = YAML.load('swagger.yml');
 
 const app = express();
 
