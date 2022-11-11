@@ -15,7 +15,7 @@ const LOG = require('./logger');
 const apiErrorHandler = require('./errors/apiErrorHandler');
 const { HTTP_NOT_FOUND_CODE, HTTP_UNAUTHORIZED_CODE, HTTP_INTERNAL_SERVER_ERROR_CODE } = require('./constants/httpStatusCodes');
 
-const port = process.env.HTTP_PORT || 3000;
+const port = process.env.PORT || 3000;
 
 // Initializing swagger configuration
 const swaggerDocument = YAML.load('./swagger.yml');
@@ -23,7 +23,9 @@ const swaggerDocument = YAML.load('./swagger.yml');
 const app = express();
 
 // Adding middleware
-app.use(cors());
+app.use(cors({
+  origin: '*'
+}));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 app.use(morgan('combined'));
@@ -53,12 +55,12 @@ app.use((error, req, res) => {
   res.status(status).json({ error: message });
 });
 
-app.listen(port, async () => {
-  LOG.info(`Server listening on port ${port}`);
-  // await sequelize.sync({ force: true });
-  await sequelize.sync();
-  await sequelize.authenticate();
-  LOG.info('Database Connected successfully!');
-});
+// app.listen(port, async () => {
+//   LOG.info(`Server listening on port ${port}`);
+//   // await sequelize.sync({ force: true });
+//   await sequelize.sync();
+//   await sequelize.authenticate();
+//   LOG.info('Database Connected successfully!');
+// });
 
 module.exports = app;

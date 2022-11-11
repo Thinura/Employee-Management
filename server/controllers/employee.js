@@ -19,6 +19,11 @@ const { HTTP_NOT_FOUND_CODE, HTTP_INTERNAL_SERVER_ERROR_CODE, HTTP_FORBIDDEN_COD
     +-------------------------------------------+
 */
 
+router.get('/health', (req, res)=>{
+  LOG.info('[GET] - api health')
+  return res.status(HTTP_SUCCESS_CODE).json({message: 'Connection established'}); 
+})
+
 router.post('/', validateDto(creaateEmployeeRequestDto), async (req, res) => {
   try {
     const { firstName, lastName, email, phone, gender, photo } = await req.body;
@@ -36,7 +41,7 @@ router.post('/', validateDto(creaateEmployeeRequestDto), async (req, res) => {
 
 router.post('/upload', upload.single('photo'), async (req, res) => {
   try {
-    const uploadPath = `${process.env.SERVER_URL}:${process.env.HTTP_PORT}/${req.file.path}`;
+    const uploadPath = `${process.env.SERVER_URL}:${process.env.PORT}/${req.file.path}`;
     return res.status(HTTP_SUCCESS_CODE).json({ uploadPath });
   } catch (error) {
     LOG.error('[POST - CREATE EMPLOYEE] Error: ', error);

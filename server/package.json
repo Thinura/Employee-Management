@@ -45,7 +45,8 @@
     "db:dev:up": "docker compose up dev-db -d",
     "db:dev:restart": "yarn db:dev:rm && yarn db:dev:up",
     "db:start": "docker compose up dev-db -d",
-    "start": "NODE_ENV=development nodemon --experimental-specifier-resolution=node app.js",
+    "start": "NODE_ENV=development nodemon --experimental-specifier-resolution=node server.js",
+    "build": "NODE_ENV=production node --experimental-specifier-resolution=node server.js",
     "lint": "eslint '**/*.js' --ignore-pattern node_modules/",
     "lint-fix": "eslint '**/*.js' --ignore-pattern node_modules/ --fix"
   }
