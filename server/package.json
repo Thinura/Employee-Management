@@ -28,17 +28,17 @@
     "dynamic-string": "0.1.2",
     "express": "4.18.2",
     "morgan": "1.10.0",
-    "multer": "^1.4.5-lts.1",
+    "multer": "1.4.5-lts.1",
     "pg": "8.8.0",
     "pg-hstore": "2.3.4",
     "sequelize": "6.25.3",
     "swagger-jsdoc": "6.2.5",
     "swagger-ui-express": "4.5.0",
-    "uid": "^2.0.1",
+    "uid": "2.0.1",
     "winston": "3.8.2",
     "yamljs": "0.3.0",
-    "yup": "^0.32.11",
-    "yup-phone-lite": "^1.1.2"
+    "yup": "0.32.11",
+    "yup-phone-lite": "1.1.2"
   },
   "scripts": {
     "db:dev:rm": "docker compose rm dev-db -s -f -v",
