@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const process = require('process');
-
+const pg = require('pg');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(`${__dirname}/../config/config.json`)[env];
@@ -13,10 +13,32 @@ let dialectOptions = {}
 
 if(process.env.NODE_ENV === 'production') {
   dialectOptions = {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
+    ssl: true,
+    dialectModule: pg,
+    pool: {
+      maxConnections: 1,
+      maxIdleTime: 1000,
+    },
+    retry: {
+      match: [
+        /ConnectionError/,
+        /SequelizeConnectionError/,
+        /SequelizeConnectionRefusedError/,
+        /SequelizeHostNotFoundError/,
+        /SequelizeHostNotReachableError/,
+        /SequelizeInvalidConnectionError/,
+        /SequelizeConnectionTimedOutError/,
+        /SequelizeConnectionAcquireTimeoutError/,
+        /Connection terminated unexpectedly/,
+      ],
+      max: Infinity,
+    },
+    synchronize: false,
+    migrationsRun: true,
+    migrations: ['./migrations/**/*{.ts,.js}'],
+    cli: {
+      migrationsDir: './migrations',
+    },
   };
 }
 
