@@ -15,17 +15,17 @@ const LOG = require('./logger');
 
 const port = PORT;
 let server;
-// if(NODE_ENV === 'production'){
-//     var key = fs.readFileSync(path.resolve('certs/selfsigned.key'));
-//     var cert = fs.readFileSync(path.resolve('certs/selfsigned.crt'));
-//     var options = {
-//         key: key,
-//         cert: cert
-//     };
-//     server = https.createServer(options, app);
-// } else if(NODE_ENV === 'development'){
+if(NODE_ENV === 'production'){
+    var key = fs.readFileSync(path.resolve('certs/server.key'));
+    var cert = fs.readFileSync(path.resolve('certs/server.crt'));
+    var options = {
+        key: key,
+        cert: cert
+    };
+    server = https.createServer(options, app);
+} else if(NODE_ENV === 'development'){
     server = http.createServer(app);
-// }
+}
 
 server.listen(port, async () => {
     LOG.info(`Server listening on host port ${port}`);
