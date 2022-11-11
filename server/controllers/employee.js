@@ -9,7 +9,7 @@ const validateDto = require('../middlewares/validateDto');
 const { creaateEmployeeRequestDto } = require('../dto/employee');
 const LOG = require('../logger');
 const upload = require('../middlewares/validateImage');
-const { HTTP_NOT_FOUND_CODE, HTTP_INTERNAL_SERVER_ERROR_CODE, HTTP_FORBIDDEN_CODE, HTTP_RESOURCE_CREATED_CODE, HTTP_NOT_CONTENT_CODE, HTTP_SUCCESS_CODE } = require('../constants/httpStatusCodes');
+const { HTTP_NOT_FOUND_CODE, HTTP_INTERNAL_SERVER_ERROR_CODE, HTTP_FORBIDDEN_CODE, HTTP_RESOURCE_CREATED_CODE, HTTP_NO_CONTENT_CODE, HTTP_SUCCESS_CODE } = require('../constants/httpStatusCodes');
 
 /*
     +-------------------------------------------+
