@@ -20,7 +20,7 @@ const path = require('path');
 
 // Initializing swagger configuration
 const swaggerPath = path.resolve('swagger.yml');
-const swaggerDocument = YAML.load('swagger.yml');
+const swaggerDocument = YAML.load(swaggerPath);
 
 const app = express();
 
