@@ -55,12 +55,12 @@ app.use((error, req, res) => {
   res.status(status).json({ error: message });
 });
 
-app.listen(port, async () => {
-  LOG.info(`Server listening on port ${port}`);
-  // await sequelize.sync({ force: true });
-  await sequelize.sync();
-  await sequelize.authenticate();
-  LOG.info('Database Connected successfully!');
-});
+// app.listen(port, async () => {
+//   LOG.info(`Server listening on port ${port}`);
+//   // await sequelize.sync({ force: true });
+//   await sequelize.sync();
+//   await sequelize.authenticate();
+//   LOG.info('Database Connected successfully!');
+// });
 
-// module.exports = app;
+module.exports = app;
