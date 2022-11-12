@@ -1,12 +1,11 @@
 import { Button, Stack } from "@mui/material";
 import { purple } from "@mui/material/colors";
+import axios from 'axios';
 import { isEqual } from "lodash";
 import Link from "next/link";
-
+import https from 'https';
 import { Layout, RenderTable, RenderTableButton } from "../../components";
 import { ADD_EMPLOYEE_BUTTON_TITLE } from "../../constants";
-import employeeList from '../../employees.json';
-import { employeeServices } from "../../services";
 
 export default function List({ employees }) {
     return (
@@ -25,17 +24,20 @@ export default function List({ employees }) {
             </Stack>
             <RenderTable data={employees} />
         </Layout>
-    )
+    );
 }
 
 export async function getServerSideProps() {
+    // added because SSL is self assigned 
+    const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 
-    const { status, data } = await employeeServices.getAllEmployeeProfiles();
+    const { status, data } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employee`, { httpsAgent });
 
-    const employees = isEqual(status, 200) ? data : []
+    const employees = isEqual(status, 200) ? data : [];
+console.log(employees)
     return {
         props: {
             employees
         }
-    }
+    };
 }
