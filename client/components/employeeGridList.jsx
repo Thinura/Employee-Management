@@ -1,8 +1,9 @@
-import { Grid } from "@mui/material"
+import { Grid } from "@mui/material";
 import EmployeeCard from "./employeeCard";
+import { EMPLOYEE_LIST_EMPTY_MESSAGE } from '../constants';
 
 export default function EmployeeGridList({ employees }) {
-    if (!employees || employees.length === 0) return <div>No Employees Available</div>
+    if (!employees || employees.length === 0) return <div>{EMPLOYEE_LIST_EMPTY_MESSAGE}</div>;
     return (
         <Grid container spacing={3} columns={{ lg: 15, md: 12, sm: 9 }}>
             {
@@ -13,5 +14,5 @@ export default function EmployeeGridList({ employees }) {
                 ))
             }
         </Grid>
-    )
+    );
 }

@@ -1,9 +1,10 @@
-
 import * as React from 'react';
 import Head from 'next/head';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
+import { Provider } from 'react-redux';
+import {store} from '../store';
 
 import theme from '../config/theme';
 import createEmotionCache from '../config/createEmotionCache';
@@ -16,8 +17,7 @@ TableSelectionProvider
 export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   return (
-    <TableSelectionProvider>
-
+    <Provider store={store}>
       <CacheProvider value={emotionCache}>
         <Head>
           <meta name="viewport" content="initial-scale=1, width=device-width" />
@@ -28,7 +28,6 @@ export default function MyApp(props) {
           <Component {...pageProps} />
         </ThemeProvider>
       </CacheProvider>
-    </TableSelectionProvider>
-
+      </Provider>
   );
 }

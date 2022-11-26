@@ -1,12 +1,11 @@
-import { useContext } from 'react';
+import { useSelector } from 'react-redux'
 
-import TableSelectionContext from '../contexts/tableSelectionContext';
 import { TABLE_RENDER_TYPES } from '../constants';
 import EmployeeGridList from './employeeGridList';
 import EmployeeTableList from './employeeTableList';
 
 export default function RenderTable({ data }) {
-    const { tableSelection } = useContext(TableSelectionContext);
+    const tableSelection =  useSelector((state) => state.tableSelection.selection)
 
     switch (tableSelection) {
         case TABLE_RENDER_TYPES.GRID:

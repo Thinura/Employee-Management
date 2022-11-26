@@ -1,27 +1,13 @@
-import {
-    InputLabel,
-    Box,
-    TextField,
-    MenuItem,
-    Card,
-    CardActions,
-    CardContent,
-    Button,
-    Typography,
-    Paper,
-    IconButton,
-    Input
-
-} from "@mui/material";
-import * as Yup from 'yup';
+import { useState } from "react";
 import { useForm } from 'react-hook-form';
+import { InputLabel, Box, TextField, MenuItem, CardActions, CardContent, Button, Typography, Paper, } from "@mui/material";
+import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import "yup-phone-lite";
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import { ADD_EMPLOYEE_SUBMIT_BUTTON_TITLE, SELECT_GENDERS } from '../constants';
-import { useState } from "react";
-import { employeeServices } from "../services";
 import { isEmpty } from "lodash";
+
+import { ADD_EMPLOYEE_SUBMIT_BUTTON_TITLE, SELECT_GENDERS, SELECT_GENDERS_DEFAULT } from '../constants';
+import { employeeServices } from "../services";
 
 export default function EmployeeForm({ onSubmitHandler, employee = {}, submitBtnTitle = ADD_EMPLOYEE_SUBMIT_BUTTON_TITLE }) {
 
@@ -56,12 +42,12 @@ export default function EmployeeForm({ onSubmitHandler, employee = {}, submitBtn
 
     async function onSubmit(data) {
         if (isSelected) {
-            const { data: { uploadPath } } = await employeeServices.uploadEmployeeProfilePicture({ data: selectedFile })
+            const { data: { uploadPath } } = await employeeServices.uploadEmployeeProfilePicture({ data: selectedFile });
             const updatedData = { ...data, photo: uploadPath };
-            onSubmitHandler(updatedData)
-        }else{
+            onSubmitHandler(updatedData);
+        } else {
             const updatedData = { ...employee, ...data };
-            onSubmitHandler(updatedData)
+            onSubmitHandler(updatedData);
         }
     }
 
@@ -84,7 +70,6 @@ export default function EmployeeForm({ onSubmitHandler, employee = {}, submitBtn
                             First Name
                         </InputLabel>
                         <Box sx={{ width: '75%' }} display={'flex'} flexDirection='column'>
-
                             <TextField
                                 defaultValue={employee.firstName}
                                 variant="filled"
@@ -184,7 +169,7 @@ export default function EmployeeForm({ onSubmitHandler, employee = {}, submitBtn
                         </InputLabel>
                         <Box sx={{ width: '75%' }} display={'flex'} flexDirection='column'>
                             <TextField
-                                defaultValue={employee.gender}
+                                defaultValue={employee?.gender || SELECT_GENDERS_DEFAULT.value}
                                 select
                                 variant="filled"
                                 id={'gender'}
@@ -224,5 +209,5 @@ export default function EmployeeForm({ onSubmitHandler, employee = {}, submitBtn
                 </CardActions>
             </Box>
         </Paper>
-    )
+    );
 }

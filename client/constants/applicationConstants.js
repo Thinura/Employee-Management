@@ -16,4 +16,11 @@ export const SELECT_GENDERS = [
         value: 'FEMALE',
         label: 'Female',
     }
-]
+];
+
+export const SELECT_GENDERS_DEFAULT = {
+    value: 'MALE',
+    label: 'Male',
+};
+
+export const EMPLOYEE_LIST_EMPTY_MESSAGE = 'No Employees Available';

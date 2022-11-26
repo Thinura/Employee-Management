@@ -30,11 +30,16 @@ export default function List({ employees }) {
 export async function getServerSideProps() {
     // added because SSL is self assigned 
     const httpsAgent = new https.Agent({ rejectUnauthorized: false });
-
-    const { status, data } = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employee`, { httpsAgent });
-
+    let data = [];
+    let status = 404;
+    try{
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employee`, { httpsAgent });
+        data = response.data;
+        status = response.status;
+    }catch(error){
+        console.error(error)
+    }
     const employees = isEqual(status, 200) ? data : [];
-console.log(employees)
     return {
         props: {
             employees
