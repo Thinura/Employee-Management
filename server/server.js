@@ -16,8 +16,8 @@ const LOG = require('./logger');
 const port = PORT;
 let server;
 if(NODE_ENV === 'production'){
-    var key = fs.readFileSync(path.resolve('certs/server.key'));
-    var cert = fs.readFileSync(path.resolve('certs/server.crt'));
+    var key = fs.readFileSync(path.join(__dirname, 'certs', 'selfsigned.key'));
+    var cert = fs.readFileSync(path.resolve(__dirname, 'certs', 'selfsigned.crt'));
     var options = {
         key: key,
         cert: cert

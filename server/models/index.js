@@ -13,7 +13,10 @@ let dialectOptions = {}
 
 if(process.env.NODE_ENV === 'production') {
   dialectOptions = {
-    ssl: true,
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    },
     dialectModule: pg,
     pool: {
       maxConnections: 1,
