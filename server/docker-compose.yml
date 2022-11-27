@@ -12,5 +12,16 @@ services:
       POSTGRES_DB: employee_db
     networks:
       - thinura
+  test-db: 
+    container_name: 'employee-manager-test-db'
+    image: postgres:latest
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: employee_db
+    networks:
+      - thinura
 networks:
   thinura:

@@ -4,6 +4,7 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const process = require('process');
 const pg = require('pg');
+const { isEqual } = require('lodash');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(`${__dirname}/../config/config.json`)[env];
@@ -50,8 +51,10 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
   sequelize = new Sequelize(process.env.POSTGRES_DATABASE, process.env.POSTGRES_USERNAME, process.env.POSTGRES_PASSWORD, {
+    port: process.env.POSTGRES_PORT,
     host: process.env.POSTGRES_HOST,
     dialect: process.env.POSTGRES_DIALECT,
+    logging: isEqual(process.env.NODE_ENV,'test') ? false : true,
     dialectOptions: dialectOptions
   });
 }

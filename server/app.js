@@ -17,6 +17,7 @@ const { HTTP_NOT_FOUND_CODE, HTTP_UNAUTHORIZED_CODE, HTTP_INTERNAL_SERVER_ERROR_
 
 const port = process.env.PORT || 3000;
 const path = require('path');
+const { isEqual } = require('lodash');
 
 // Initializing swagger configuration
 const swaggerPath = path.resolve('swagger.yml');
