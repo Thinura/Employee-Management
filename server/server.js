@@ -12,7 +12,7 @@ const LOG = require('./logger');
 
 const { PORT, NODE_ENV } = process.env;
 let server;
-if(NODE_ENV === 'production'){
+// if(NODE_ENV === 'production'){
     var key = fs.readFileSync(path.join(__dirname, 'certs', 'selfsigned.key'));
     var cert = fs.readFileSync(path.resolve(__dirname, 'certs', 'selfsigned.crt'));
     var options = {
@@ -20,9 +20,9 @@ if(NODE_ENV === 'production'){
         cert: cert
     };
     server = https.createServer(options, app);
-} else if(NODE_ENV === 'development'){
-    server = http.createServer(app);
-}
+// } else if(NODE_ENV === 'development'){
+//     server = http.createServer(app);
+// }
 
 server.listen(PORT, async () => {
     LOG.info(`Server listening on host port ${PORT}`);

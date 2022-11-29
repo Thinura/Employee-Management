@@ -14,6 +14,7 @@ employeeApi.interceptors.response.use(
   error => errorHandler(error),
 );
 
-export {
-  employeeApi,
+export default {
+  employeeApi
 };
+

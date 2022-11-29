@@ -55,7 +55,7 @@ export default function EmployeeTableList() {
                                 />
                             </TableCell>
                             <TableCell align="left">{employee.firstName}</TableCell>
-                            <TableCell minWidth={170} align="left">{employee.lastName}</TableCell>
+                            <TableCell className='min-w-[170px]' align="left">{employee.lastName}</TableCell>
                             <TableCell align="left">{employee.email}</TableCell>
                             <TableCell align="left">{employee.phone}</TableCell>
                             <TableCell width={100} align="center">{getGender(employee.gender)}</TableCell>

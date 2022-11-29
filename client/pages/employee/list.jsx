@@ -8,6 +8,7 @@ import { Layout, RenderTable, RenderTableButton } from "../../components";
 import { ADD_EMPLOYEE_BUTTON_TITLE } from "../../constants";
 import { wrapper } from '../../slices/store';
 import { fetchedEmployees } from '../../slices/employeeDetailsSlice';
+import { isEmpty } from 'lodash';
 
 export default function List() {
     return (
@@ -35,7 +36,7 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ()
     let data = [];
     try{
         const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employee`, { httpsAgent });
-        data = response.data;
+        data = isEmpty(response.data) ? [] : response.data;
     }catch(error){
         console.error(error)
     }

@@ -9,12 +9,11 @@ const combinedReducer = combineReducers({
 });
 
 const masterReducer = (state, action) => {
-
     if (action.type === HYDRATE) {
         const nextState = {
             ...state, // use previous state
             fetchedEmployees: {
-              employees: state.fetchedEmployees.employees
+              employees: action.payload.fetchedEmployees.employees
             },
             tableSelection: {
               selection: state.tableSelection.selection,
