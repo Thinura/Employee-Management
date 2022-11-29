@@ -1,13 +1,15 @@
 import { Button, Stack } from "@mui/material";
 import { purple } from "@mui/material/colors";
 import axios from 'axios';
-import { isEqual } from "lodash";
 import Link from "next/link";
 import https from 'https';
+
 import { Layout, RenderTable, RenderTableButton } from "../../components";
 import { ADD_EMPLOYEE_BUTTON_TITLE } from "../../constants";
+import { wrapper } from '../../slices/store';
+import { fetchedEmployees } from '../../slices/employeeDetailsSlice';
 
-export default function List({ employees }) {
+export default function List() {
     return (
         <Layout>
             <Stack spacing={3} sx={{ justifyContent: 'flex-end', paddingRight: '1em', paddingBottom: '1em' }} direction={"row"}>
@@ -22,27 +24,20 @@ export default function List({ employees }) {
                 </Link>
                 <RenderTableButton />
             </Stack>
-            <RenderTable data={employees} />
+            <RenderTable />
         </Layout>
     );
 }
 
-export async function getServerSideProps() {
+export const getServerSideProps = wrapper.getServerSideProps((store) => async () => {
     // added because SSL is self assigned 
     const httpsAgent = new https.Agent({ rejectUnauthorized: false });
     let data = [];
-    let status = 404;
     try{
         const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/employee`, { httpsAgent });
         data = response.data;
-        status = response.status;
     }catch(error){
         console.error(error)
     }
-    const employees = isEqual(status, 200) ? data : [];
-    return {
-        props: {
-            employees
-        }
-    };
-}
+    store.dispatch(fetchedEmployees(data));
+})

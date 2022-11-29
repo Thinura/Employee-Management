@@ -4,18 +4,18 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider } from '@emotion/react';
 import { Provider } from 'react-redux';
-import {store} from '../store';
+import { wrapper } from '../slices/store';
 
 import theme from '../config/theme';
 import createEmotionCache from '../config/createEmotionCache';
-import { TableSelectionProvider } from '../contexts/tableSelectionContext';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
-TableSelectionProvider
-export default function MyApp(props) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+export default function MyApp({ Component, ...rest }) {
+  const { store, props } = wrapper.useWrappedStore(rest);
+  const { emotionCache = clientSideEmotionCache, pageProps } = props;
+
   return (
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
@@ -28,6 +28,7 @@ export default function MyApp(props) {
           <Component {...pageProps} />
         </ThemeProvider>
       </CacheProvider>
-      </Provider>
+    </Provider>
   );
 }
+

@@ -12,13 +12,16 @@ import {
 } from '@mui/material';
 import Link from "next/link";
 import { useRouter } from 'next/router';
-
+import { useSelector } from 'react-redux';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { red, grey } from '@mui/material/colors';
+
 import { getFullName, getGender } from '../utils/employeeCard';
 import { employeeServices } from '../services';
 
-export default function EmployeeTableList({ employees }) {
+export default function EmployeeTableList() {
+    const employees = useSelector((state)=> state.fetchedEmployees.employees);
+
     return (
         <TableContainer sx={{ paddingInline: '50px' }}>
             <Table aria-label={'Employee Table'}>

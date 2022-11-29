@@ -8,7 +8,6 @@ import { renderTableIconByType, renderTableButtonActionByType } from "../utils/t
 export default function RenderTableButton() {
     const dispatch = useDispatch();
     const tableSelection =  useSelector((state) => state.tableSelection.selection)
-
     return (
         <IconButton
             sx={{ color: purple[800] }}
