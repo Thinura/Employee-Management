@@ -9,7 +9,6 @@ const express = require('express');
 const swaggerUI = require('swagger-ui-express');
 const YAML = require('yamljs');
 
-const { sequelize } = require('./models');
 const employeeRouter = require('./controllers/employee');
 const LOG = require('./logger');
 const apiErrorHandler = require('./errors/apiErrorHandler');
@@ -17,7 +16,6 @@ const { HTTP_NOT_FOUND_CODE, HTTP_UNAUTHORIZED_CODE, HTTP_INTERNAL_SERVER_ERROR_
 
 const port = process.env.PORT || 3000;
 const path = require('path');
-const { isEqual } = require('lodash');
 
 // Initializing swagger configuration
 const swaggerPath = path.resolve('swagger.yml');

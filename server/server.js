@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
 dotenv.config({ path: envFile });
 
-const http = require('http');
+// const http = require('http');
 const https = require('https');
 const path = require('path');
 const fs = require('fs');
